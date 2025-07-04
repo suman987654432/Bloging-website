@@ -2,14 +2,6 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
-  "env": {
-    "NODE_OPTIONS": "--no-optional"
-  },
-  "build": {
-    "env": {
-      "NODE_OPTIONS": "--no-optional"
-    }
-  },
   "rewrites": [
     { "source": "/(.*)", "destination": "/" }
   ]
