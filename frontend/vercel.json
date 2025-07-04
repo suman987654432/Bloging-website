@@ -1,10 +1,6 @@
 {
-  "buildCommand": "cd frontend && npm run build",
-  "outputDirectory": "frontend/dist",
+  "rootDirectory": "frontend",
   "framework": "vite",
-  "env": {
-    "NODE_OPTIONS": "--no-optional"
-  },
   "build": {
     "env": {
       "NODE_OPTIONS": "--no-optional"
