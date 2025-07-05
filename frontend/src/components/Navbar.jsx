@@ -18,7 +18,7 @@ function Navbar() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div>
-            <h1 onClick={goToHome} className="text-white text-3xl font-extrabold tracking-wide drop-shadow-[0_2px_2px_rgba(0,0,0,0.2)] cursor-pointer">BlogVerse</h1>
+            <h1 onClick={goToHome} className="text-white text-3xl font-extrabold tracking-wide drop-shadow-[0_2px_2px_rgba(0,0,0,0.2)] cursor-pointer">BlogSphere</h1>
           </div>
 
           {/* Desktop Navigation */}
