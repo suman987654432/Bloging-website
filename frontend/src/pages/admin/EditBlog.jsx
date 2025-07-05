@@ -36,7 +36,7 @@ const EditBlog = () => {
 
   const fetchBlog = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/blogs/${id}`);
+      const response = await fetch(`https://bloging-website-wnaj.onrender.com/api/blogs/${id}`);
       const data = await response.json();
       
       if (data.success) {
@@ -71,7 +71,7 @@ const EditBlog = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(`http://localhost:5000/api/blogs/${id}`, {
+      const response = await fetch(`https://bloging-website-wnaj.onrender.com/api/blogs/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

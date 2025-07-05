@@ -10,7 +10,7 @@ const CommentPage = () => {
 
   const fetchComments = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/comments');
+      const response = await fetch('https://bloging-website-wnaj.onrender.com/api/comments');
       const data = await response.json();
       
       if (data.success) {
@@ -26,7 +26,7 @@ const CommentPage = () => {
   const deleteComment = async (commentId) => {
     if (window.confirm('Are you sure you want to delete this comment?')) {
       try {
-        const response = await fetch(`http://localhost:5000/api/comments/${commentId}`, {
+        const response = await fetch(`https://bloging-website-wnaj.onrender.com/api/comments/${commentId}`, {
           method: 'DELETE',
         });
         

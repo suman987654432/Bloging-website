@@ -31,7 +31,7 @@ const MangeBlogs = () => {
   const fetchBlogs = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:5000/api/blogs');
+      const response = await fetch('https://bloging-website-wnaj.onrender.com/api/blogs');
       const data = await response.json();
       if (data.success) {
         setBlogs(data.blogs);
@@ -60,7 +60,7 @@ const MangeBlogs = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this blog?')) {
       try {
-        const response = await fetch(`http://localhost:5000/api/blogs/${id}`, {
+        const response = await fetch(`https://bloging-website-wnaj.onrender.com/api/blogs/${id}`, {
           method: 'DELETE',
         });
         const data = await response.json();

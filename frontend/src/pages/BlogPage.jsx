@@ -24,7 +24,7 @@ const BlogPage = () => {
 
       // Capitalize the first letter for API call
       const categoryForAPI = category.charAt(0).toUpperCase() + category.slice(1);
-      const apiUrl = `http://localhost:5000/api/blogs/category/${categoryForAPI}`;
+      const apiUrl = `https://bloging-website-wnaj.onrender.com/api/blogs/category/${categoryForAPI}`;
       const response = await fetch(apiUrl);
 
       if (!response.ok) {

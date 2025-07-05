@@ -29,14 +29,14 @@ const AdminNavbar = ({ onLogout }) => {
   const fetchCounts = async () => {
     try {
       // Fetch blog count
-      const blogResponse = await fetch('http://localhost:5000/api/blogs')
+      const blogResponse = await fetch('https://bloging-website-wnaj.onrender.com/api/blogs')
       const blogData = await blogResponse.json()
       if (blogData.success) {
         setBlogCount(blogData.blogs.length)
       }
 
       // Fetch comment count
-      const commentResponse = await fetch('http://localhost:5000/api/comments')
+      const commentResponse = await fetch('https://bloging-website-wnaj.onrender.com/api/comments')
       const commentData = await commentResponse.json()
       if (commentData.success) {
         setCommentCount(commentData.comments.length)
