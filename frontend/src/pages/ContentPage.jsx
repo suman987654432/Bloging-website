@@ -22,6 +22,12 @@ const ContentPage = () => {
   const { tableOfContents, scrollToHeading, modifiedContent } = useTableOfContents(blog);
   const { commentForm, isSubmitting, MAX_COMMENT_LENGTH, handleInputChange, handleCommentSubmit } = useComments(blog);
 
+  // Debug logging
+  useEffect(() => {
+    console.log('ContentPage - tableOfContents:', tableOfContents);
+    console.log('ContentPage - isTocOpen:', isTocOpen);
+  }, [tableOfContents, isTocOpen]);
+
   useEffect(() => {
     if (location.state?.blog) {
       setBlog(location.state.blog);
@@ -81,6 +87,118 @@ const ContentPage = () => {
   return (
     <>
       <Navbar />
+      <style jsx>{`
+        .blog-content {
+          line-height: 1.8;
+        }
+        
+        .blog-content ul {
+          list-style-type: disc;
+          margin: 1rem 0;
+          padding-left: 2rem;
+        }
+        
+        .blog-content ol {
+          list-style-type: decimal;
+          margin: 1rem 0;
+          padding-left: 2rem;
+        }
+        
+        .blog-content li {
+          margin: 0.5rem 0;
+          line-height: 1.6;
+        }
+        
+        .blog-content ul ul {
+          list-style-type: circle;
+          margin: 0.5rem 0;
+        }
+        
+        .blog-content ol ol {
+          list-style-type: lower-alpha;
+          margin: 0.5rem 0;
+        }
+        
+        .blog-content p {
+          margin: 1rem 0;
+        }
+        
+        .blog-content h1, .blog-content h2, .blog-content h3, 
+        .blog-content h4, .blog-content h5, .blog-content h6 {
+          margin: 1.5rem 0 1rem 0;
+          line-height: 1.3;
+        }
+        
+        .blog-content blockquote {
+          border-left: 4px solid #e5e7eb;
+          padding-left: 1rem;
+          margin: 1rem 0;
+          font-style: italic;
+          color: #6b7280;
+        }
+        
+        .blog-content table {
+          width: 100%;
+          border-collapse: collapse;
+          margin: 1rem 0;
+        }
+        
+        .blog-content th, .blog-content td {
+          border: 1px solid #e5e7eb;
+          padding: 0.5rem;
+          text-align: left;
+        }
+        
+        .blog-content th {
+          background-color: #f9fafb;
+          font-weight: 600;
+        }
+        
+        .blog-content img {
+          max-width: 100%;
+          height: auto;
+          margin: 1rem 0;
+          border-radius: 0.5rem;
+        }
+        
+        .blog-content a {
+          color: #2563eb;
+          text-decoration: underline;
+        }
+        
+        .blog-content a:hover {
+          color: #1d4ed8;
+        }
+        
+        .blog-content strong {
+          font-weight: 600;
+        }
+        
+        .blog-content em {
+          font-style: italic;
+        }
+        
+        .blog-content code {
+          background-color: #f3f4f6;
+          padding: 0.25rem 0.5rem;
+          border-radius: 0.25rem;
+          font-family: 'Courier New', monospace;
+          font-size: 0.875em;
+        }
+        
+        .blog-content pre {
+          background-color: #f3f4f6;
+          padding: 1rem;
+          border-radius: 0.5rem;
+          overflow-x: auto;
+          margin: 1rem 0;
+        }
+        
+        .blog-content pre code {
+          background-color: transparent;
+          padding: 0;
+        }
+      `}</style>
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 flex">
         {/* Fixed TOC Sidebar - Always visible on desktop */}
         {tableOfContents.length > 0 && (
