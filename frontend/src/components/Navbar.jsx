@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom' 
 
 function Navbar() {
@@ -7,7 +7,8 @@ function Navbar() {
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen)
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen)
-     const navigate = useNavigate()
+  const navigate = useNavigate()
+  
   const goToHome = () => {
     navigate('/') 
   }

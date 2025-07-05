@@ -25,6 +25,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/blogdb', 
 
 app.use('/api/blogs', require('./routes/blogs'));
 app.use('/api/comments', require('./routes/comments'));
+app.use('/api/contact', require('./routes/contact'));
 
 app.get('/', (req, res) => {
   res.json({ message: 'Blog API is running!' });

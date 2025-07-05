@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
 import HeroPage from './pages/HeroPage';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminLayout from './layouts/AdminLayout';

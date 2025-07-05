@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 const BlogPage = () => {
   const { category } = useParams();
@@ -21,7 +22,9 @@ const BlogPage = () => {
       setLoading(true);
       setError(null);
 
-      const apiUrl = `http://localhost:5000/api/blogs/category/${category}`;
+      // Capitalize the first letter for API call
+      const categoryForAPI = category.charAt(0).toUpperCase() + category.slice(1);
+      const apiUrl = `http://localhost:5000/api/blogs/category/${categoryForAPI}`;
       const response = await fetch(apiUrl);
 
       if (!response.ok) {
@@ -42,6 +45,7 @@ const BlogPage = () => {
   };
 
   const getCategoryIcon = (category) => {
+    const categoryName = category.charAt(0).toUpperCase() + category.slice(1);
     const icons = {
       'Beauty': '💄',
       'Tech': '💻',
@@ -49,10 +53,11 @@ const BlogPage = () => {
       'Business': '📈',
       'Sports': '⚽'
     };
-    return icons[category] || '📝';
+    return icons[categoryName] || '📝';
   };
 
   const getCategoryColor = (category) => {
+    const categoryName = category.charAt(0).toUpperCase() + category.slice(1);
     const colors = {
       'Beauty': 'from-rose-400 via-pink-500 to-purple-600',
       'Tech': 'from-blue-400 via-cyan-500 to-indigo-600',
@@ -60,7 +65,7 @@ const BlogPage = () => {
       'Business': 'from-orange-400 via-amber-500 to-red-600',
       'Sports': 'from-yellow-400 via-orange-500 to-red-600'
     };
-    return colors[category] || 'from-gray-400 via-slate-500 to-gray-600';
+    return colors[categoryName] || 'from-gray-400 via-slate-500 to-gray-600';
   };
 
   const handleReadMore = (blog) => {
@@ -115,7 +120,7 @@ const BlogPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            {category} <span className="bg-white/20 px-3 py-1 rounded-xl">Blogs</span>
+            {category.charAt(0).toUpperCase() + category.slice(1)} <span className="bg-white/20 px-3 py-1 rounded-xl">Blogs</span>
           </motion.h1>
           <motion.p 
             className="mt-4 text-lg md:text-xl text-white/80 max-w-2xl mx-auto"
@@ -211,6 +216,7 @@ const BlogPage = () => {
           
         </div>
       </div>
+      <Footer/>
     </>
   );
 };

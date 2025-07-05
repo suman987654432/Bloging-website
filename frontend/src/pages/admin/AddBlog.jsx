@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import SunEditor from 'suneditor-react';
 import 'suneditor/dist/css/suneditor.min.css';
 import {
@@ -72,7 +72,7 @@ const AddBlog = () => {
     <Container size="md" py="xl">
       <Title order={2} mb="md">Create New Blog Post</Title>
       <form onSubmit={handleSubmit}>
-        <Stack spacing="md">
+        <Stack gap="md">
           <TextInput
             label="Title"
             placeholder="Enter blog title"
@@ -108,7 +108,7 @@ const AddBlog = () => {
           />
 
           <div>
-            <Text weight={500} size="sm" mb="xs">Content</Text>
+            <Text fw={500} size="sm" mb="xs">Content</Text>
             <SunEditor
               height="300px"
               setContents={formData.content}
@@ -127,7 +127,7 @@ const AddBlog = () => {
             />
           </div>
 
-          <Group position="right" mt="md">
+          <Group justify="flex-end" mt="md">
             <Button type="submit" loading={isSubmitting}>
               {isSubmitting ? 'Publishing...' : 'Publish Blog'}
             </Button>

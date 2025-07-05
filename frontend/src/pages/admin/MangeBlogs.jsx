@@ -12,9 +12,11 @@ import {
   Group,
   ActionIcon,
   Button,
-  Select
+  Select,
+  Paper,
+  Stack,
 } from '@mantine/core';
-import { IconEdit, IconTrash } from '@tabler/icons-react';
+import { IconEdit, IconTrash, IconRefresh } from '@tabler/icons-react';
 
 const MangeBlogs = () => {
   const [blogs, setBlogs] = useState([]);
@@ -24,21 +26,13 @@ const MangeBlogs = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  // Predefined categories - matching the Blog model enum values
-  const allCategories = [
-    'Beauty',
-    'Tech', 
-    'Fitness',
-    'Business',
-    'Sports'
-  ];
+  const allCategories = ['Beauty', 'Tech', 'Fitness', 'Business', 'Sports'];
 
   const fetchBlogs = async () => {
     try {
       setLoading(true);
       const response = await fetch('http://localhost:5000/api/blogs');
       const data = await response.json();
-      
       if (data.success) {
         setBlogs(data.blogs);
       } else {
@@ -56,7 +50,7 @@ const MangeBlogs = () => {
   }, []);
 
   useEffect(() => {
-    if (selectedCategory === '' || selectedCategory === 'all') {
+    if (!selectedCategory || selectedCategory === 'all') {
       setFilteredBlogs(blogs);
     } else {
       setFilteredBlogs(blogs.filter(blog => blog.category === selectedCategory));
@@ -69,14 +63,10 @@ const MangeBlogs = () => {
         const response = await fetch(`http://localhost:5000/api/blogs/${id}`, {
           method: 'DELETE',
         });
-        
         const data = await response.json();
-        
         if (data.success) {
           setBlogs(blogs.filter(blog => blog._id !== id));
           alert('Blog deleted successfully!');
-          
-          // Trigger a custom event to update navbar counts
           window.dispatchEvent(new CustomEvent('refreshCounts'));
         } else {
           alert('Failed to delete blog: ' + data.message);
@@ -91,71 +81,54 @@ const MangeBlogs = () => {
     navigate(`/adminp/editblog/${id}`);
   };
 
-  // Get unique categories from blogs and merge with predefined categories
   const blogCategories = [...new Set(blogs.map(blog => blog.category))];
   const allAvailableCategories = [...new Set([...allCategories, ...blogCategories])].sort();
   const categoryOptions = [
     { value: 'all', label: 'All Categories' },
-    ...allAvailableCategories.map(category => ({
-      value: category,
-      label: category
-    }))
+    ...allAvailableCategories.map(c => ({ value: c, label: c }))
   ];
 
   const rows = filteredBlogs.map((blog) => (
-    <tr key={blog._id}>
-      <td>
-        <Text size="sm" weight={500} lineClamp={2}>
+    <Table.Tr key={blog._id}>
+      <Table.Td style={{ maxWidth: 200 }}>
+        <Text size="sm" fw={500} lineClamp={1}>
           {blog.title}
         </Text>
-      </td>
-      <td>
-        <Badge variant="light" color="blue">
-          {blog.category}
-        </Badge>
-      </td>
-      <td>
-        <Image
-          src={blog.bannerImage}
-          alt={blog.title}
-          width={80}
-          height={50}
-          fit="cover"
-          radius="sm"
-          withPlaceholder
-        />
-      </td>
-      <td>
-        <Text size="sm">
-          {new Date(blog.createdAt).toLocaleDateString()}
-        </Text>
-      </td>
-      <td>
-        <Group spacing="xs">
-          <ActionIcon 
-            variant="light" 
-            color="yellow"
-            onClick={() => handleEdit(blog._id)}
-            title="Edit Blog"
-          >
+      </Table.Td>
+      <Table.Td>
+        <Badge variant="light" color="blue">{blog.category}</Badge>
+      </Table.Td>
+      <Table.Td>
+        <div style={{ width: 80, height: 50, overflow: 'hidden', borderRadius: 8 }}>
+          <Image
+            src={blog.bannerImage}
+            alt={blog.title}
+            fit="cover"
+            w={80}
+            h={50}
+            fallbackSrc="https://via.placeholder.com/80x50?text=No+Image"
+          />
+        </div>
+      </Table.Td>
+      <Table.Td>
+        <Text size="sm">{new Date(blog.createdAt).toLocaleDateString()}</Text>
+      </Table.Td>
+      <Table.Td>
+        <Group gap="xs">
+          <ActionIcon variant="light" color="yellow" onClick={() => handleEdit(blog._id)}>
             <IconEdit size={16} />
           </ActionIcon>
-          <ActionIcon 
-            variant="light" 
-            color="red"
-            onClick={() => handleDelete(blog._id)}
-            title="Delete Blog"
-          >
+          <ActionIcon variant="light" color="red" onClick={() => handleDelete(blog._id)}>
             <IconTrash size={16} />
           </ActionIcon>
         </Group>
-      </td>
-    </tr>
+      </Table.Td>
+    </Table.Tr>
   ));
 
   return (
-    <Container size="xl" py="xl">
-      <Group position="apart" mb="md">
+    <Container size="xl" py="xl" style={{ minHeight: '80vh' }}>
+      <Group justify="space-between" mb="md">
         <Title order={2}>Manage Blogs</Title>
         <Group>
           <Select
@@ -166,41 +139,43 @@ const MangeBlogs = () => {
             clearable
             style={{ minWidth: 200 }}
           />
-          <Button onClick={fetchBlogs}>Refresh</Button>
+          <Button 
+            onClick={fetchBlogs} 
+            leftSection={<IconRefresh size={16} />}
+            variant="light"
+          >
+            Refresh
+          </Button>
         </Group>
       </Group>
 
-      {error && (
-        <Alert color="red" mb="md">
-          {error}
-        </Alert>
-      )}
+      {error && <Alert color="red" mb="md">{error}</Alert>}
 
-      <div style={{ position: 'relative', minHeight: 200 }}>
+      <Paper radius="md" shadow="sm" p="sm" style={{ position: 'relative' }}>
         <LoadingOverlay visible={loading} />
-        
         {!loading && filteredBlogs.length === 0 ? (
-          <Text align="center" color="dimmed" py="xl">
-            {selectedCategory && selectedCategory !== 'all' ? 
-              `No blogs found in "${selectedCategory}" category` : 
-              'No blogs found'
-            }
-          </Text>
+          <Stack align="center" py="xl">
+            <Text c="dimmed">
+              {selectedCategory && selectedCategory !== 'all'
+                ? `No blogs found in "${selectedCategory}" category`
+                : 'No blogs found'}
+            </Text>
+          </Stack>
         ) : (
-          <Table striped highlightOnHover>
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Category</th>
-                <th>Banner Image</th>
-                <th>Created</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>{rows}</tbody>
+          <Table striped highlightOnHover verticalSpacing="sm">
+            <Table.Thead>
+              <Table.Tr>
+                <Table.Th>Title</Table.Th>
+                <Table.Th>Category</Table.Th>
+                <Table.Th>Banner</Table.Th>
+                <Table.Th>Date</Table.Th>
+                <Table.Th>Actions</Table.Th>
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>{rows}</Table.Tbody>
           </Table>
         )}
-      </div>
+      </Paper>
     </Container>
   );
 };

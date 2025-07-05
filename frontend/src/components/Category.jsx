@@ -49,7 +49,7 @@ const Category = () => {
   ]
 
   const handleCategoryClick = (categoryName) => {
-    navigate(`/category/${categoryName}`);
+    navigate(`/category/${categoryName.toLowerCase()}`);
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -8,6 +8,7 @@ import ArticleContent from '../components/ArticleContent';
 import CommentSection from '../components/CommentSection';
 import { useTableOfContents } from '../hooks/useTableOfContents';
 import { useComments } from '../hooks/useComments';
+import Footer from '../components/Footer';
 
 const ContentPage = () => {
   const { id } = useParams();
@@ -15,9 +16,10 @@ const ContentPage = () => {
   const navigate = useNavigate();
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isTocOpen, setIsTocOpen] = useState(false);
 
   // Custom hooks
-  const { tableOfContents, isTocOpen, setIsTocOpen, scrollToHeading, modifiedContent } = useTableOfContents(blog);
+  const { tableOfContents, scrollToHeading, modifiedContent } = useTableOfContents(blog);
   const { commentForm, isSubmitting, MAX_COMMENT_LENGTH, handleInputChange, handleCommentSubmit } = useComments(blog);
 
   useEffect(() => {
@@ -79,39 +81,59 @@ const ContentPage = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
-        {/* Desktop Table of Contents Sidebar */}
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 flex">
+        {/* Fixed TOC Sidebar - Always visible on desktop */}
         {tableOfContents.length > 0 && (
-          <div className="hidden lg:fixed lg:block left-4 top-24 w-64 h-[calc(100vh-6rem)] z-40">
-            <div className="bg-white rounded-xl shadow-lg border border-gray-200 h-full overflow-hidden">
-              <div className="px-4 py-3 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50">
-                <h3 className="text-sm font-bold text-gray-800 flex items-center">
-                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="hidden lg:block w-80 bg-white shadow-xl border-r border-gray-200 sticky top-16 self-start">
+            <div style={{ height: '85vh', width: '320px' }} className="flex flex-col">
+              {/* TOC Header */}
+              <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50 flex-shrink-0">
+                <h3 className="text-lg font-bold text-gray-800 flex items-center">
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
                   </svg>
                   Table of Contents
                 </h3>
               </div>
-              
-              <div className="p-4 overflow-y-auto h-full">
-                <nav className="space-y-1">
+
+              {/* TOC Content */}
+              <div className="p-4 overflow-y-auto flex-1">
+                <nav className="space-y-2">
                   {tableOfContents.map((item, index) => (
                     <button
                       key={index}
-                      onClick={() => scrollToHeading(item.id)}
-                      className={`block w-full text-left py-2 px-3 rounded-lg hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 text-sm ${
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        console.log('Desktop TOC clicked:', item); // Debug log
+                        
+                        if (scrollToHeading && item.id) {
+                          scrollToHeading(item.id);
+                        } else {
+                          // Fallback scroll method
+                          const element = document.getElementById(item.id);
+                          if (element) {
+                            element.scrollIntoView({ 
+                              behavior: 'smooth', 
+                              block: 'start',
+                              inline: 'nearest'
+                            });
+                          }
+                        }
+                      }}
+                      className={`block w-full text-left py-3 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 text-sm border border-transparent hover:border-blue-200 ${
                         item.level === 1 ? 'font-semibold text-gray-800' :
-                        item.level === 2 ? 'font-medium text-gray-700 ml-3' :
-                        'text-gray-600 ml-6'
+                        item.level === 2 ? 'font-medium text-gray-700 ml-4' :
+                        'text-gray-600 ml-8'
                       }`}
                     >
                       <span className="flex items-center">
-                        <span className={`w-1.5 h-1.5 rounded-full mr-2 flex-shrink-0 ${
+                        <span className={`w-2 h-2 rounded-full mr-3 flex-shrink-0 ${
                           item.level === 1 ? 'bg-blue-600' :
                           item.level === 2 ? 'bg-blue-400' :
                           'bg-blue-300'
                         }`}></span>
-                        <span className="truncate">{item.text}</span>
+                        <span className="leading-relaxed">{item.text}</span>
                       </span>
                     </button>
                   ))}
@@ -121,47 +143,48 @@ const ContentPage = () => {
           </div>
         )}
 
-        <div className={`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 ${
-          tableOfContents.length > 0 ? 'lg:ml-72' : ''
-        }`}>
-          {/* Back Button */}
-          <button 
-            onClick={() => navigate(-1)}
-            className="mb-8 flex items-center text-blue-600 hover:text-blue-800 transition-all duration-300 group font-medium"
-          >
-            <svg className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
-            </svg>
-            Back to Articles
-          </button>
-
-          {/* Article Content */}
-          <ArticleContent 
-            blog={blog} 
-            tableOfContents={tableOfContents}
-            isTocOpen={isTocOpen}
-            setIsTocOpen={setIsTocOpen}
-            scrollToHeading={scrollToHeading}
-            modifiedContent={modifiedContent}
-          />
-
-          {/* Comment Section */}
-          <CommentSection 
-            commentForm={commentForm}
-            handleInputChange={handleInputChange}
-            handleCommentSubmit={handleCommentSubmit}
-            isSubmitting={isSubmitting}
-            MAX_COMMENT_LENGTH={MAX_COMMENT_LENGTH}
-          />
-
-          {/* Navigation */}
-          <div className="mt-12 flex justify-center">
+        {/* Main Content - Positioned to the right */}
+        <div className="flex-1 min-h-screen">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            {/* Back Button */}
             <button 
               onClick={() => navigate(-1)}
-              className="px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              className="mb-6 flex items-center text-blue-600 hover:text-blue-800 transition-all duration-300 group font-medium"
             >
-              Back to {blog.category} Articles
+              <svg className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
+              Back to Articles
             </button>
+
+            {/* Article Content - Let it handle mobile TOC */}
+            <ArticleContent 
+              blog={blog} 
+              tableOfContents={tableOfContents}
+              isTocOpen={isTocOpen}
+              setIsTocOpen={setIsTocOpen}
+              scrollToHeading={scrollToHeading}
+              modifiedContent={modifiedContent}
+            />
+
+            {/* Comment Section */}
+            <CommentSection 
+              commentForm={commentForm}
+              handleInputChange={handleInputChange}
+              handleCommentSubmit={handleCommentSubmit}
+              isSubmitting={isSubmitting}
+              MAX_COMMENT_LENGTH={MAX_COMMENT_LENGTH}
+            />
+
+            {/* Navigation */}
+            <div className="mt-8 mb-8 flex justify-center">
+              <button 
+                onClick={() => navigate(-1)}
+                className="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              >
+                Back to {blog.category} Articles
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -178,6 +201,7 @@ const ContentPage = () => {
         pauseOnHover
         theme="light"
       />
+      <Footer/>
     </>
   );
 };

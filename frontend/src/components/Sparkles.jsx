@@ -26,7 +26,10 @@ export const SparklesCore = ({ particleColor = "#ffffff", particleDensity = 50, 
       r: Math.random() * 2 + 1,
       dx: (Math.random() - 0.5) * 0.5,
       dy: (Math.random() - 0.5) * 0.5,
+      opacity: Math.random() * 0.8 + 0.2,
     }));
+
+    let animationId;
 
     const draw = () => {
       if (!ctx) return;
@@ -36,6 +39,7 @@ export const SparklesCore = ({ particleColor = "#ffffff", particleDensity = 50, 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fillStyle = particleColor;
+        ctx.globalAlpha = p.opacity;
         ctx.fill();
 
         p.x += p.dx;
@@ -43,15 +47,23 @@ export const SparklesCore = ({ particleColor = "#ffffff", particleDensity = 50, 
 
         if (p.x < 0 || p.x > width) p.dx *= -1;
         if (p.y < 0 || p.y > height) p.dy *= -1;
+
+        // Add twinkling effect
+        p.opacity += (Math.random() - 0.5) * 0.02;
+        p.opacity = Math.max(0.1, Math.min(1, p.opacity));
       }
 
-      requestAnimationFrame(draw);
+      ctx.globalAlpha = 1;
+      animationId = requestAnimationFrame(draw);
     };
 
     draw();
 
     return () => {
       window.removeEventListener("resize", resizeCanvas);
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
     };
   }, [particleColor, particleDensity]);
 
@@ -63,3 +75,5 @@ export const SparklesCore = ({ particleColor = "#ffffff", particleDensity = 50, 
     />
   );
 };
+
+export default SparklesCore;

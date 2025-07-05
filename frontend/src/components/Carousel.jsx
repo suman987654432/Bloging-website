@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 import { SparklesCore } from '../components/Sparkles' 
 
 const Carousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0)
+  const navigate = useNavigate()
 
   const slides = [
     {
@@ -60,6 +62,10 @@ const Carousel = () => {
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length)
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
   const goToSlide = (index) => setCurrentSlide(index)
+
+  const handleGetStarted = (category) => {
+    navigate(`/category/${category}`)
+  }
 
   return (
     <div className="relative w-full h-[70vh] sm:h-[80vh] md:h-[85vh] lg:h-[95vh] overflow-hidden shadow-2xl border-2 border-white/40 rounded-3xl bg-gradient-to-br from-gray-900/30 to-black/40 backdrop-blur-sm">
@@ -132,7 +138,10 @@ const Carousel = () => {
                     animate={{ opacity: 1, y: 0 }} 
                     transition={{ delay: 0.4, duration: 0.6 }}
                   >
-                    <button className="group relative px-10 py-5 bg-white text-gray-900 font-black text-lg rounded-full shadow-2xl hover:shadow-white/30 transform hover:scale-105 hover:-translate-y-2 transition-all duration-300 overflow-hidden border-2 border-white/20">
+                    <button 
+                      onClick={() => handleGetStarted(slide.category)}
+                      className="group relative px-10 py-5 bg-white text-gray-900 font-black text-lg rounded-full shadow-2xl hover:shadow-white/30 transform hover:scale-105 hover:-translate-y-2 transition-all duration-300 overflow-hidden border-2 border-white/20"
+                    >
                       <span className="relative z-10 flex items-center gap-3">
                         Get Started 
                         <svg className="w-6 h-6 transform group-hover:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -238,4 +247,4 @@ const Carousel = () => {
   )
 }
 
-export default Carousel;
+export default Carousel

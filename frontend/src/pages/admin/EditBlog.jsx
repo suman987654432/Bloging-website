@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import SunEditor from 'suneditor-react';
 import 'suneditor/dist/css/suneditor.min.css';
@@ -104,7 +104,7 @@ const EditBlog = () => {
 
   return (
     <Container size="md" py="xl">
-      <Group position="apart" mb="md">
+      <Group justify="space-between" mb="md">
         <Title order={2}>Edit Blog Post</Title>
         <Button variant="subtle" onClick={() => navigate('/adminp/blogs')}>
           Back to Blogs
@@ -112,7 +112,7 @@ const EditBlog = () => {
       </Group>
       
       <form onSubmit={handleSubmit}>
-        <Stack spacing="md">
+        <Stack gap="md">
           <TextInput
             label="Title"
             placeholder="Enter blog title"
@@ -148,7 +148,7 @@ const EditBlog = () => {
           />
 
           <div>
-            <Text weight={500} size="sm" mb="xs">Content</Text>
+            <Text fw={500} size="sm" mb="xs">Content</Text>
             <SunEditor
               height="300px"
               setContents={formData.content}
@@ -167,7 +167,7 @@ const EditBlog = () => {
             />
           </div>
 
-          <Group position="right" mt="md">
+          <Group justify="flex-end" mt="md">
             <Button variant="subtle" onClick={() => navigate('/adminp/blogs')}>
               Cancel
             </Button>
