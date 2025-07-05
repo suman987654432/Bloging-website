@@ -10,6 +10,9 @@ import About from './components/About';
 import Contact from './components/Contact';
 import ContentPage from './pages/ContentPage';
 import CommentPage from './pages/admin/CommentPage';
+import Privacy from './components/Privacy';
+import Term from './components/Term';
+import Cookies from './components/Cookies';
 
 const App = () => {
   return (
@@ -19,6 +22,9 @@ const App = () => {
           <Route path="/" element={<HeroPage />} />
           <Route path='/about' element={<About/>}/>
           <Route path='/contact' element={<Contact/>}/>
+          <Route path='/privacy' element={<Privacy/>}/>
+          <Route path='/terms' element={<Term/>}/>
+          <Route path='/cookies' element={<Cookies/>}/>
           <Route path="/category/:category" element={<BlogPage />} />
           <Route path="/content/:id" element={<ContentPage />} />
           <Route path="/admin" element={<AdminLogin />} />

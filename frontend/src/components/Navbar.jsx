@@ -13,7 +13,7 @@ function Navbar() {
     navigate('/') 
   }
   return (
-    <nav className="bg-gradient-to-r from-blue-400 to-cyan-500 shadow-xl sticky top-0 z-50 backdrop-blur-sm">
+    <nav className="bg-gradient-to-r from-fuchsia-500 to-violet-700 shadow-xl sticky top-0 z-50 backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -55,7 +55,7 @@ function Navbar() {
                   <li key={cat}>
                     <a
                       href={`/category/${cat.toLowerCase()}`}
-                      className="block px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-blue-400 hover:to-cyan-500 hover:text-white hover:pl-6 transition-all duration-300"
+                      className="block px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-fuchsia-500 hover:to-violet-600 hover:text-white hover:pl-6 transition-all duration-300"
                     >
                       {cat}
                     </a>

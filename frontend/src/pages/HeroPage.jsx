@@ -3,6 +3,8 @@ import Navbar from '../components/Navbar'
 import Carousel from '../components/Carousel'
 import Category from '../components/Category'
 import Footer from '../components/Footer'
+import Testimonal from '../components/Testimonal'
+import Newsletter from '../components/Newsletter'
 
 const HeroPage = () => {
   return (
@@ -10,6 +12,8 @@ const HeroPage = () => {
     <Navbar/>
     <Carousel/>
     <Category/>
+    <Testimonal/>
+    <Newsletter/>
     <Footer/>
     </>
   )
