@@ -31,7 +31,7 @@ const About = () => {
             </h2>
 
             <p className="text-base sm:text-lg md:text-xl text-gray-700 mb-6 md:mb-8 font-medium text-justify p-4 md:p-6 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl md:rounded-2xl border-l-4 border-indigo-500">
-              At [Your Blog Name], we believe great stories spark change. What began as a passion project has now become a growing hub of insight, creativity, and community. Every word we publish aims to educate, inspire, and empower.
+              At BlogSphere, we believe great stories spark change. What began as a passion project has now become a growing hub of insight, creativity, and community. Every word we publish aims to educate, inspire, and empower.
             </p>
 
             <p className="text-sm sm:text-base md:text-lg text-gray-600 mb-5 md:mb-7 text-justify leading-6 md:leading-8">
@@ -60,21 +60,7 @@ const About = () => {
             </div>
           </div>
 
-          {/* Metrics Section */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mt-8 md:mt-12">
-            <div className="text-center bg-white p-4 sm:p-6 md:p-8 rounded-xl md:rounded-2xl shadow-lg">
-              <h3 className="text-3xl sm:text-4xl md:text-5xl font-black text-indigo-500 m-0">1000+</h3>
-              <p className="text-gray-600 mt-1 md:mt-2 text-sm sm:text-base md:text-lg">Published Stories</p>
-            </div>
-            <div className="text-center bg-white p-4 sm:p-6 md:p-8 rounded-xl md:rounded-2xl shadow-lg">
-              <h3 className="text-3xl sm:text-4xl md:text-5xl font-black text-indigo-500 m-0">50K+</h3>
-              <p className="text-gray-600 mt-1 md:mt-2 text-sm sm:text-base md:text-lg">Monthly Explorers</p>
-            </div>
-            <div className="text-center bg-white p-4 sm:p-6 md:p-8 rounded-xl md:rounded-2xl shadow-lg sm:col-span-2 md:col-span-1">
-              <h3 className="text-3xl sm:text-4xl md:text-5xl font-black text-indigo-500 m-0">5+ Years</h3>
-              <p className="text-gray-600 mt-1 md:mt-2 text-sm sm:text-base md:text-lg">Of Sharing Stories</p>
-            </div>
-          </div>
+        
         </div>
       </div>
 
